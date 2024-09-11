@@ -40,6 +40,11 @@
                     value="{{ old('contract_date', $employee->contract_date) }}" required>
             </div>
             <div class="form-group">
+                <label for="date_fixed">Tanggal Di Angkat Tetap</label>
+                <input type="date" id="date_fixed" name="date_fixed" class="form-control"
+                    value="{{ old('date_fixed', $employee->date_fixed) }}" required>
+            </div>
+            <div class="form-group">
                 <label for="work_date">Tanggal Mulai Bekerja</label>
                 <input type="date" id="work_date" name="work_date" class="form-control"
                     value="{{ old('work_date', $employee->work_date) }}" required>
@@ -100,8 +105,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="e_mail">Email</label>
-                <input type="email" id="e_mail" name="e_mail" class="form-control"
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control"
                     value="{{ old('e_mail', $employee->email) }}" placeholder="Masukkan Email">
             </div>
             <div class="form-group">

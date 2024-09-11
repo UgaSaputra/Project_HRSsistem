@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('nickname')->nullable();
             $table->date('contract_date')->nullable();
+            $table->date('date_fixed')->nullable();
             $table->date('work_date')->nullable();
             $table->enum('status', ['Aktif', 'Berhenti']);
             $table->string('position')->nullable();

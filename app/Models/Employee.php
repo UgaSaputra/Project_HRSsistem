@@ -15,6 +15,7 @@ class Employee extends Model
         'full_name',
         'nickname',
         'contract_date',
+        'date_fixed',
         'work_date',
         'status',
         'position',
@@ -50,5 +51,9 @@ class Employee extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'email', 'email');
+    }
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'id_number', 'id_number');
     }
 }
