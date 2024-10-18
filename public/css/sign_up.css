@@ -1,0 +1,119 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(145deg, #e0f7fa, #ffffff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+form {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 350px;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-30px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #d3d3d3;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px; 
+  background: #f9f9f9; 
+}
+
+.form-control:focus {
+  border-color: #4dd0e1; 
+  box-shadow: 0 0 10px rgba(77, 208, 225, 0.4);
+  outline: none;
+}
+
+button {
+  background: linear-gradient(145deg, #64b5f6, #2196f3); 
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 10px 10px 20px #ccccd9, -10px -10px 20px #ffffff;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(145deg, #1976d2, #64b5f6); 
+  box-shadow: 10px 10px 30px rgba(0, 128, 255, 0.2), -10px -10px 30px rgba(64, 158, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.separator .line {
+  flex-grow: 1;
+  height: 1px;
+  background: #ccc;
+}
+
+.separator p {
+  margin: 0 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* .heading {
+  margin: 22px auto 12px;
+  background-image: url("https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png");
+  background-position: -98px 0;
+  height: 51px;
+  width: 177px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.header p {
+  color: #333; 
+  text-align: center;
+  font-size: 16px; 
+  margin: 10px 0; 
+}
+
+@media screen and (max-width: 480px) {
+  form {
+      width: 90%;
+  }
+}
+
+.form-control {
+  transition: transform 0.3s ease;
+}
+
+.form-control:focus {
+  transform: scale(1.01);
+}

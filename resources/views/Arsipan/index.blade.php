@@ -18,8 +18,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Data Arsipan Karyawan</li>
+                            <li class="breadcrumb-item"><a href="{{ route('karyawan.index') }}">Lihat Data</a></li>
+                            <li class="breadcrumb-item active">Data Arsipan</li>
                         </ol>
                     </div>
                 </div>
@@ -99,18 +99,19 @@
                                 <td>{{ $Arsipan->graduation_year }}</td>
                                 <td>{{ $Arsipan->competency_training_place }}</td>
                                 <td>{{ $Arsipan->organizational_experience }}</td>
-                                <td>{{ $Arsipan->familyData->mate_name ?? '-' }}</td>
-                                <td>{{ $Arsipan->familyData->child_name ?? '-' }}</td>
-                                <td>{{ $Arsipan->familyData->wedding_date ?? '-' }}</td>
-                                <td>{{ $Arsipan->familyData->wedding_certificate_number ?? '-' }}</td>
+                                <td>{{ $Arsipan->mate_name ?? '-' }}</td>
+                                <td>{{ $Arsipan->child_name ?? '-' }}</td>
+                                <td>{{ $Arsipan->wedding_date ?? '-' }}</td>
+                                <td>{{ $Arsipan->wedding_certificate_number ?? '-' }}</td>
                                 <td>
-                                <form action="{{ route('employee.destroy', $Arsipan->id_number) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-primary mt-1">Lihat</button>
-                                    <button type="submit" class="btn btn-danger mt-1">Delete</button>
-                                </form>
-                            </td>
+                                    @can('ismanager')                                     
+                                    <form action="{{ route('employee.destroy', $Arsipan->id_number) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger mt-1">Delete</button>
+                                    </form>
+                                    @endcan
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

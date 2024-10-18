@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('Arsipan.Arsip') }}">Arsipan</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('karyawan.inputPage') }}">Tambah Data</a></li>
                             <li class="breadcrumb-item active">Data Karyawan</li>
                         </ol>
@@ -39,8 +39,13 @@
                 </div>
             </div>
             <a href="{{ route('export') }}" class="btn btn-primary">Export Data</a>
-            <a href="{{ route('export') }}" class="btn btn-primary">Import Data</a>
-
+            @can('isadmin')
+                <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" accept=".xlsx,.xls" required>
+                <button type="submit">Import</button>
+            </form>
+            @endcan
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -112,12 +117,17 @@
                                 <td>{{ $employee->familyData->wedding_date ?? '-' }}</td>
                                 <td>{{ $employee->familyData->wedding_certificate_number ?? '-' }}</td>
                                 <td>
-                                    <a href="{{ route('employee.edit', $employee->id_number) }}"
-                                        class="btn btn-primary">Edit</a>
-                                        <form action="{{ route('employee.archive', $employee->id_number) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-warning">Arsipkan</button>
-                                        </form>                                        
+                                    @if (auth()->user()->can('ismanager'))
+                                        <a href="{{ route('employee.edit', $employee->id_number) }}"
+                                            class="btn btn-primary">Edit</a>
+                                    @endif
+
+                                    <form action="{{ route('employee.archive', $employee->id_number) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning">Arsipkan</button>
+                                    </form>
+
                                     {{-- <form action="{{ route('employee.destroy', $employee->id_number) }}" method="POST"
                                         style="display:inline;">
                                         @csrf

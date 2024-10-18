@@ -1,0 +1,124 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.upload-container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.upload-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-photo {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    background: linear-gradient(145deg, #e2e2fa, #ffffff);
+    border-radius: 20px;
+    box-shadow: 10px 10px 20px #ccccd9, -10px -10px 20px #ffffff;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.upload-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+.icon-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.upload-delete {
+    color: #ff4d4d;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.upload-delete:hover {
+    color: #ff0000;
+}
+
+.text-center {
+    color: #777;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+/* Custom Button */
+.btn-custom {
+    background: linear-gradient(145deg, #5061ff, #7f86ff);
+    color: #ffffff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 10px 10px 20px #ccccd9, -10px -10px 20px #ffffff;
+    transition: all 0.3s ease;
+    width: 200px;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(145deg, #3b4df5, #6e77f5);
+    box-shadow: 10px 10px 30px rgba(80, 97, 255, 0.2), -10px -10px 30px rgba(127, 134, 255, 0.1);
+}
+
+/* Success Alert */
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+#success-message {
+    display: none;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .upload-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .upload-photo {
+        height: 250px;
+    }
+}

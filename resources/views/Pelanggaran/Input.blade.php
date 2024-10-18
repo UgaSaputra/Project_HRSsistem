@@ -36,10 +36,12 @@
                     <select id="id_number" name="id_number" class="form-control" required>
                         <option value="">-- Pilih --</option>
                         @foreach ($employees as $employee)
-                            <option value="{{ $employee->id_number }}">{{ $employee->id_number }}</option>
+                            <option value="{{ $employee->id_number }}" data-full-name="{{ $employee->full_name }}">
+                                {{ $employee->id_number }} - {{ $employee->full_name }}
+                            </option>
                         @endforeach
                     </select>
-                </div>
+                </div>                
                 <div class="form-group">
                     <label for="offense_type">Jenis Pelanggaran</label>
                     <input type="text" id="offense_type" name="offense_type" class="form-control"

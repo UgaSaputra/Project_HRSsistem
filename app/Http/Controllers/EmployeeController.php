@@ -8,11 +8,107 @@ use App\Models\Employee;
 use App\Models\FamilyData;
 use Illuminate\Http\Request;
 use App\Models\Employee_record;
+use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+
 class EmployeeController extends Controller
 {
+    public function import(Request $request)
+{
+    // Validasi file yang diupload
+    $validator = Validator::make($request->all(), [
+        'file' => 'required|mimes:xlsx,xls',
+    ]);
+
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
+    }
+
+    // Ambil file yang diupload
+    $file = $request->file('file');
+    $spreadsheet = IOFactory::load($file->path());
+    $sheet = $spreadsheet->getActiveSheet();
+    $data = $sheet->toArray();
+
+    // Skip header
+    array_shift($data);
+
+    // Nilai yang valid untuk kolom ENUM
+    $allowedStatuses = ['Aktif', 'Berhenti'];
+    $allowedGenders = ['pria', 'wanita'];
+    $allowedMaritalStatuses = ['menikah', 'belum',];
+
+    // Loop setiap baris di file Excel
+    foreach ($data as $row) {
+        if (count($row) >= 24) { 
+            // Ambil data dari Excel
+            $id_number = $row[0];
+            $full_name = $row[1];
+            $nickname = $row[2];
+            $contract_date = $this->convertDate($row[3]);
+            $status = $row[6];
+            $gender = $row[7];
+            $marital_status = $row[12];
+
+            // Validasi kolom ENUM
+            if (!in_array($status, $allowedStatuses)) {
+                return back()->with('error', 'Status tidak valid.');
+            }
+            if (!in_array($gender, $allowedGenders)) {
+                return back()->with('error', 'Gender tidak valid.');
+            }
+            if (!in_array($marital_status, $allowedMaritalStatuses)) {
+                return back()->with('error', 'Status pernikahan tidak valid.');
+            }
+
+            // Simpan data ke database
+            Employee::updateOrCreate(
+                ['id_number' => $id_number], // Key untuk update atau create
+                [
+                    'full_name' => $full_name,
+                    'nickname' => $nickname,
+                    'contract_date' => $contract_date,
+                    'status' => $status,
+                    'gender' => $gender,
+                    'marital_status' => $marital_status,
+                    'work_date' => $this->convertDate($row[4]),
+                    'position' => $row[5],
+                    'place_birth' => $row[8],
+                    'birth_date' => $this->convertDate($row[9]),
+                    'religion' => $row[10],
+                    'email' => $row[11],
+                    'residence_address' => $row[13],
+                    'phone' => $row[14],
+                    'address_emergency' => $row[15],
+                    'phone_emergency' => $row[16],
+                    'blood_type' => $row[17],
+                    'last_education' => $row[18],
+                    'agency' => $row[19],
+                    'graduation_year' => $row[20],
+                    'competency_training_place' => $row[21],
+                    'organizational_experience' => $row[22],
+                ]
+            );
+        }
+    }
+
+    return back()->with('success', 'Data berhasil diimpor!');
+}
+
+private function convertDate($date)
+{
+    if ($date instanceof \PhpOffice\PhpSpreadsheet\Cell\Cell) {
+        return Date::excelToDateTimeObject($date->getValue())->format('Y-m-d');
+    }
+
+    return date('Y-m-d', strtotime($date));
+}
     public function export()
     {
         $employees = Employee::with('familyData')->get();
@@ -165,6 +261,7 @@ class EmployeeController extends Controller
         $familyData->save();
 
         User::create([
+            'name' => $employee->name,
             'email' => $employee->email,
             'password' => bcrypt($request->password),
         ]);
@@ -250,18 +347,24 @@ class EmployeeController extends Controller
 
     //     return redirect()->route('karyawan.index')->with('success', 'Data berhasil dihapus!');
     // }
+    public function Arsip()
+    {
+        $Arsipan = Arsipan::all();
+
+        return view('Arsipan.index', compact('Arsipan'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
 
     public function archive($id_number)
     {
-        // Ambil data employee dan family terkait
-        $employee = Employee_record::with('familyData')->where('id_number', $id_number)->first();
+        $employee = Employee::with('familyData')->where('id_number', $id_number)->firstOrFail();
 
-        // Pindahkan data ke tabel arsip
-        Arsipan::create([
+        DB::table('arsipans')->insertOrIgnore([
             'id_number' => $employee->id_number,
             'full_name' => $employee->full_name,
             'nickname' => $employee->nickname,
             'contract_date' => $employee->contract_date,
+            'date_fixed' => $employee->date_fixed,
             'work_date' => $employee->work_date,
             'status' => $employee->status,
             'position' => $employee->position,
@@ -283,16 +386,31 @@ class EmployeeController extends Controller
             'graduation_year' => $employee->graduation_year,
             'competency_training_place' => $employee->competency_training_place,
             'organizational_experience' => $employee->organizational_experience,
-            'mate_name' => $employee->familyData->mate_name ?? null,
-            'child_name' => $employee->familyData->child_name ?? null,
-            'wedding_date' => $employee->familyData->wedding_date ?? null,
-            'wedding_certificate_number' => $employee->familyData->wedding_certificate_number ?? null,
+            'mate_name' => $employee->familyData->mate_name ?? '',
+            'child_name' => $employee->familyData->child_name ?? '',
+            'wedding_date' => $employee->familyData->wedding_date ?? '',
+            'wedding_certificate_number' => $employee->familyData->wedding_certificate_number ?? '',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        // Hapus data dari tabel asli
-        $employee->familyData->delete();
+        if ($employee->familyData) {
+            $employee->familyData->delete();
+        }
+
         $employee->delete();
 
-        return redirect()->route('karyawan.index')->with('success', 'Data berhasil diarsipkan');
+        return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil diarsipkan.');
+    }
+    public function destroy($id_number)
+    {
+        $arsip = Arsipan::where('id_number', $id_number)->first();
+
+        if ($arsip) {
+            $arsip->delete();
+            return back()->with('success', 'Data berhasil dihapus!');
+        }
+
+        return back()->with('error', 'Data tidak ditemukan!');
     }
 }

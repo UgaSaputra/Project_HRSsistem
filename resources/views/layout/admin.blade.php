@@ -62,7 +62,7 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{route('home')}}" class="nav-link">Home</a>
+                    <a href="{{ route('home') }}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
@@ -201,7 +201,7 @@
                             alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Uga Saputra</a>
+                        <a href="#" class="d-block">{{ Auth::user()->level }}</a>
                     </div>
                 </div>
 
@@ -228,7 +228,6 @@
                                 </p>
                             </a>
                         </li>
-
                         <li class="nav-item has-treeview" id="dataKaryawanMenu">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-days"></i>
@@ -238,11 +237,13 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview ml-5" id="dataKaryawanSubmenu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('karyawan.inputPage') }}">
-                                        <i class="fas fa-plus"></i> Tambah Data
-                                    </a>
-                                </li>
+                                @can('isadmin')
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('karyawan.inputPage') }}">
+                                            <i class="fas fa-plus"></i> Tambah Data
+                                        </a>
+                                    </li>
+                                @endcan
                                 <li class="nav-item">
                                     <a class="nav-link" href="/employees">
                                         <i class="fas fa-list"></i> Lihat Data
@@ -250,46 +251,69 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item has-treeview" id="dataPelangaranMenu">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-circle-info"></i>
-                                <p>
-                                    Data Pelanggaran
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview ml-5" id="dataPelangaranSubmenu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('pelanggaran.create') }}">
-                                        <i class="fas fa-plus"></i> Tambah Data
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('Pelanggaran.index') }}">
-                                        <i class="fas fa-list"></i> Lihat Data
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+
+                        @can('ismanager')
+                            <li class="nav-item has-treeview" id="dataPelangaranMenu">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle-info"></i>
+                                    <p>
+                                        Data Pelanggaran
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview ml-5" id="dataPelangaranSubmenu">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('Pelanggaran.index') }}">
+                                            <i class="fas fa-list"></i> Lihat Data
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endcan
+
+                        @can('isadmin')
+                            <li class="nav-item has-treeview" id="dataPelangaranMenu">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle-info"></i>
+                                    <p>
+                                        Data Pelanggaran
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview ml-5" id="dataPelangaranSubmenu">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('pelanggaran.create') }}">
+                                            <i class="fas fa-plus"></i> Tambah Data
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('Pelanggaran.index') }}">
+                                            <i class="fas fa-list"></i> Lihat Data
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endcan
+
                         <li class="nav-item">
-                            <a href="/Arsipan" class="nav-link">
-                                <i class="nav-icon fas fa fa-user"></i>
+                            <a href="{{ route('Arsipan.Arsip') }}" class="nav-link">
+                                <i class="nav-icon fas fa-archive"></i>
                                 <p>
-                                    Asripan
+                                    Arsipan
                                 </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('absen.index')}}" class="nav-link">
-                                <i class="nav-icon fas fa fa-clock"></i>
-                                <p>
-                                    Absen
-                                </p>
-                            </a>
-                        </li>
+                        </li>                        
+                            <li class="nav-item">
+                                <a href="{{ route('absen.showForm') }}" class="nav-link">
+                                    <i class="nav-icon fas fa fa-clock"></i>
+                                    <p>
+                                        Absen
+                                    </p>
+                                </a>
+                            </li>
                     </ul>
-                    
-                </ul>
+
+                    </ul>
                 </nav>
 
             </div>
@@ -326,16 +350,16 @@
             });
         });
     </script>
-      <script>
-          document.addEventListener('DOMContentLoaded', function() {
-              const menuItem = document.getElementById('dataPelangaranMenu');
-              const submenu = document.getElementById('dataPelangaranSubmenu');
-  
-              menuItem.addEventListener('click', function() {
-                  menuItem.classList.toggle('active');
-              });
-          });
-      </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItem = document.getElementById('dataPelangaranMenu');
+            const submenu = document.getElementById('dataPelangaranSubmenu');
+
+            menuItem.addEventListener('click', function() {
+                menuItem.classList.toggle('active');
+            });
+        });
+    </script>
 
 </body>
 

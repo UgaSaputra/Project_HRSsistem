@@ -45,17 +45,23 @@
                                 <td>{{ $employee->offense_date }}</td>
                                 <td>{{ $employee->description }}</td>
                                 <td>
-                                    <form action="{{ route('pelanggaran.destroy', $employee->id) }}" method="POST"
-                                        style="display:inline;">
+                                    <form action="{{ route('pelanggaran.destroy', $employee->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                        <a href="{{ route('pelanggaran.edit', $employee->id) }}"
-                                            class="btn btn-primary">Edit</a>
-                                        <button type="submit" class="btn btn-primary mt-1">Catatan HRD</button>
+                                
+                                        @can('isadmin')
+                                            <a href="{{ route('pelanggaran.edit', $employee->id) }}" class="btn btn-primary">Edit</a>
+                                            <button type="submit" class="btn btn-primary mt-1">Catatan HRD</button>
+                                        @endcan
+                                
+                                        @can('ismanager')
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                            <a href="{{ route('pelanggaran.edit', $employee->id) }}" class="btn btn-primary">Edit</a>
+                                            <button type="submit" class="btn btn-primary mt-1">Catatan HRD</button>
+                                        @endcan
                                     </form>
                                 </td>
-                            </tr>
+                                
                         @endforeach
 
                     </tbody>

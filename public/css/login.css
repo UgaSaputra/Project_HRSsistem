@@ -1,0 +1,150 @@
+/* Global styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(145deg, #e0f7fa, #ffffff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    background-attachment: fixed;
+}
+
+/* Box container */
+.box1 {
+    margin-bottom: 40px; /* Meningkatkan jarak antara gambar dan form */
+    text-align: center;
+}
+
+.box1 img {
+    max-width: 400px; /* Ukuran gambar yang lebih besar */
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease;
+}
+
+/* Animation on hover for image */
+.box1 img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* Form container */
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 320px;
+    animation: fadeIn 1s ease;
+}
+
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Input fields styling */
+.field {
+    margin-bottom: 20px;
+}
+
+.field input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d3d3d3;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.field input:focus {
+    border-color: #4dd0e1; /* Warna biru laut saat fokus */
+    box-shadow: 0 0 10px rgba(77, 208, 225, 0.4);
+    outline: none;
+}
+
+/* Button styling with animation */
+.login-button {
+    background: linear-gradient(145deg, #64b5f6, #2196f3); /* Warna biru lembut */
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 10px 10px 20px #ccccd9, -10px -10px 20px #ffffff;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background: linear-gradient(145deg, #1976d2, #64b5f6); /* Warna biru tua saat hover */
+    box-shadow: 10px 10px 30px rgba(0, 128, 255, 0.2), -10px -10px 30px rgba(64, 158, 255, 0.1);
+    transform: scale(1.05);
+}
+
+/* Separator for the OR line */
+.separator {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.separator .line {
+    flex-grow: 1;
+    height: 1px;
+    background: #ccc;
+}
+
+.separator p {
+    margin: 0 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Checkbox and remember me block */
+.block {
+    margin-top: 10px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex a {
+    color: #2196f3;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.flex a:hover {
+    text-decoration: underline;
+}
+
+/* Additional animations */
+form:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 480px) {
+    form {
+        width: 100%;
+    }
+
+    .box1 img {
+        max-width: 250px; /* Ukuran gambar lebih kecil di layar kecil */
+    }
+}
